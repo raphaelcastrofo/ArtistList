@@ -1,12 +1,11 @@
 package com.devspacecomposeinit
 
-import android.media.Image
 import android.os.Bundle
-import android.provider.MediaStore.Audio.Artists
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -15,10 +14,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CardElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -45,13 +45,46 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    val artist = Artist(
+                    val leonardo = Artist(
                         name = "Leonardo da Vinci",
                         lastSeenOnline = "3 minutes ago",
                         image = R.drawable.ic_leonardo_da_vinci,
-                        art = R.drawable.ic_mona_lisa,
+                        art = R.drawable.ic_mona_lisa
                     )
-                    ArtistCard(artist)
+
+                    val picasso = Artist(
+                        name = "Pablo Picasso",
+                        lastSeenOnline = "6 minutes ago",
+                        image = R.drawable.ic_pablo_picasso,
+                        art = R.drawable.ic_beijo
+                    )
+
+                    val salvador = Artist(
+                        name = "Salvador Dali",
+                        lastSeenOnline = "1 minutes ago",
+                        image = R.drawable.ic_salvador_dali,
+                        art = R.drawable.ic_persistence_of_memory
+                    )
+
+                    val vanGogh = Artist(
+                        name = "Vicent Van Gogh",
+                        lastSeenOnline = "2 minutes ago",
+                        image = R.drawable.ic_vincent_van_gogh,
+                        art = R.drawable.ic_starry_night
+                    )
+
+                    val artists = listOf(vanGogh, salvador,picasso,leonardo)
+
+                    LazyColumn {
+                        items(artists){ artist ->
+                            ArtistCard(
+                                artist = artist,
+                                onClick = {
+
+                                }
+                            )
+                        }
+                    }
                 }
             }
         }
@@ -61,11 +94,15 @@ class MainActivity : ComponentActivity() {
 
 
 @Composable
-fun ArtistCard(artist: Artist) {
+fun ArtistCard(
+    artist: Artist,
+    onClick:() -> Unit
+) {
 
     Column (
         modifier = Modifier
-            .padding(8.dp),
+            .padding(8.dp)
+            .clickable(onClick = onClick),
     ){
 
         Row(
@@ -103,7 +140,8 @@ fun ArtistCard(artist: Artist) {
 
         ) {
             Image(
-                modifier = Modifier.fillMaxWidth()
+                modifier = Modifier
+                    .fillMaxWidth()
                     .height(200.dp),
                 contentScale = ContentScale.Crop,
                 painter = painterResource(id = artist.art),
@@ -125,11 +163,16 @@ data class Artist (
 fun ArtistCardPreview() {
     ComposeInitTheme {
         val artist = Artist(
-            name = "Alfred Sisley",
+            name = "Leonardo da Vinci",
             lastSeenOnline = "3 minutes ago",
             image = R.drawable.ic_leonardo_da_vinci,
             art = R.drawable.ic_mona_lisa
         )
-        ArtistCard(artist)
+        ArtistCard(
+            artist = artist,
+            onClick = {
+            }
+        )
     }
 }
+
